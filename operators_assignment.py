@@ -14,7 +14,10 @@ def arth_operations():
     elif opr_num == 3:
         print(f"Multiplication: {a}*{b} :", a*b)
     elif opr_num == 4:
-        print("Division: {}/{} :".format(a, b), a/b)
+        if b == 0:
+            print(f"Can't divide {a} by 0 ,sorry")
+        else:
+            print("Division: {}/{} :".format(a, b), a/b)
     else:
         print("error: Available operation  numbers are 1 ,2 , 3 , 4 only")
 
