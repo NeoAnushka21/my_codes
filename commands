@@ -1,0 +1,3 @@
+# to get into virtual environment of python
+sudo apt-get install python3-venv
+

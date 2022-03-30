@@ -40,21 +40,25 @@ for i in range(l):
         long_decr = l0d
 
 
-#def sum_of_longest_seq(long_incr, long_decr):
 
-if len(long_incr) > len(long_decr):
-    print(sum(long_incr))
-elif len(long_incr) < len(long_decr):
-    print(sum(long_decr))
-elif len(long_incr) == len(long_decr):
-    print(sum(long_incr), sum(long_decr))
-else:
-    if long_incr.index(long_incr[0]) < long_decr.index(long_decr[0]):
+def sum_of_longest_seq(long_incr, long_decr):
+
+    if len(long_incr) > len(long_decr):
         print(sum(long_incr))
-    else:
+    elif len(long_incr) < len(long_decr):
         print(sum(long_decr))
+    elif len(long_incr) == len(long_decr):
+        print(sum(long_incr), sum(long_decr))
+    else:
+        if long_incr.index(long_incr[0]) < long_decr.index(long_decr[0]):
+            print(sum(long_incr))
+        else:
+            print(sum(long_decr))
 
 
 print(f"The longest continuous Incremented sequence is {long_incr}")
 print(f"The longest continuous decremented sequence is {long_decr}")
+
+sum_of_longest_seq(long_incr, long_decr)
+
 
