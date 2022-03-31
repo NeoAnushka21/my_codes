@@ -1,3 +1,4 @@
+# take input from user and append it to a list
 my_list = []
 l = int(input("Enter number of elements you want in list : "))
 print(f"Enter the {l} elements of list :")
@@ -7,14 +8,24 @@ for i in range(0, l):
 print('my_list=', my_list)
 
 # for increment in sequence
-long_incr = []
+long_incr = []              # declaring a list for storing the longest increment sequence
+
+# loop upto length of list
 for i in range(l):
+
+    # creating a temporary list for storing increment sequence
     l0i = []
+
+    # loop upto length of list-1
     for j in range(i, l - 1):
+
+        # for current value less than next value in lit , append it to the temporary list
         if my_list[j] <= my_list[j + 1]:
             l0i.append(my_list[j])
         else:
             break
+
+    # Checking for last and last second index
     if (my_list[-2] <= my_list[-1]) and my_list[j] == my_list[-2]:
         l0i.append(my_list[-1])
     else:
@@ -24,14 +35,24 @@ for i in range(l):
         long_incr = l0i
 
 # for decrement in sequence
-long_decr = []
+long_decr = []                 # declaring a list for storing the longest decrement sequence
+
+# loop upto length of list
 for i in range(l):
+
+    # creating a temporary list for storing decrement sequence
     l0d = []
+
+    # loop upto length of list-1
     for j in range(i, l - 1):
+
+        # For current value greater than next value in lit , append it to the temporary list
         if my_list[j] >= my_list[j + 1]:
             l0d.append(my_list[j])
         else:
             break
+
+    # Checking for last and last second index
     if (my_list[-2] >= my_list[-1]) and my_list[j] == my_list[-2]:
         l0d.append(my_list[-1])
     else:
@@ -40,7 +61,7 @@ for i in range(l):
         long_decr = l0d
 
 
-
+# Function to check which among list long increment and long decrement is longest
 def sum_of_longest_seq(long_incr, long_decr):
 
     if len(long_incr) > len(long_decr):

@@ -1,10 +1,12 @@
 a = int(input("Enter 1st integer value: "))
 b = int(input("Enter 2nd integer value: "))
-quest01 = "which operation would you like to execute?\n1.Addition\n2.Subtraction\n3.Multiplication\n4.Division"
+quest01 = "which operation would you like to execute?" \
+          "\n1.Addition\n2.Subtraction\n3.Multiplication\n4.Division"
 print(quest01)
 opr_num = int(input("Enter the operation number:"))
 
 
+# defining a function with arithmetic operations
 def arth_operations():
 
     if opr_num == 1:
@@ -22,15 +24,19 @@ def arth_operations():
         print("error: Available operation  numbers are 1 ,2 , 3 , 4 only")
 
 
+# calling the function
 arth_operations()
 
 
+# For true condition, we execute the while block
 while True:
 
     print("Do you want to perform another operation?(Y/N)")
-    ans02 = str(input().lower())
+    # to remove case sensitivity ,used casefold()
+    ans02 = str(input().casefold())
 
     if ans02 == 'y':
+        # for answer y , ask operation number and then call function
         opr_num = int(input("Enter the operation number:"))
         arth_operations()
     elif ans02 == 'n':
