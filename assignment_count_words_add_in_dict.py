@@ -22,5 +22,6 @@ for line in file01:
             my_dict[word] = 1
 
 
+# Printing the occurrence of words in key:value pair
 for key in list(my_dict.keys()):
     print(key, ":", my_dict[key], end=" ")

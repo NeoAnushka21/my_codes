@@ -1,3 +1,4 @@
+# Creating parent-1 class
 class A:
 
     def __init__(self):
@@ -10,6 +11,7 @@ class A:
         print("feature 2 is of A")
 
 
+# Creating parent-2 class
 class B:
 
     def __init__(self):
@@ -22,6 +24,7 @@ class B:
         print("feature 4 is of B")
 
 
+# Child class of parent 1 and 2
 class C(A, B):
 
     def __init__(self):
@@ -33,12 +36,13 @@ class C(A, B):
         print("feature 5 is of C")
 
 
+# Object of Child class
 c1 = C()
 c1.feature1()
 c1.feature5()
 
 
-# feature1 is present in both A and B , it will execute of A as A is LEFT parent.
+# Feature1 is present in both A and B , it will execute of A as A is LEFT parent.
 # This is called "Method resolution Order"
 
 # In multiple inheritance Child will always take Property of parent on LEFT

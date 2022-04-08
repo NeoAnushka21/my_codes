@@ -6,7 +6,7 @@ print(quest01)
 opr_num = int(input("Enter the operation number:"))
 
 
-# defining a function with arithmetic operations
+# Defining a function with arithmetic operations
 def arth_operations():
 
     if opr_num == 1:
@@ -24,7 +24,7 @@ def arth_operations():
         print("error: Available operation  numbers are 1 ,2 , 3 , 4 only")
 
 
-# calling the function
+# Calling the function
 arth_operations()
 
 
@@ -32,11 +32,11 @@ arth_operations()
 while True:
 
     print("Do you want to perform another operation?(Y/N)")
-    # to remove case sensitivity ,used casefold()
+    # To remove case sensitivity ,used casefold()
     ans02 = str(input().casefold())
 
     if ans02 == 'y':
-        # for answer y , ask operation number and then call function
+        # For answer y , ask operation number and then call function
         opr_num = int(input("Enter the operation number:"))
         arth_operations()
     elif ans02 == 'n':

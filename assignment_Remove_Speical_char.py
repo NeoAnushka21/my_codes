@@ -5,14 +5,14 @@ import re
 str1 = "This#string%contains^special*characters&."
 
 # Giving a regular expression which will only accept alphanumeric values
-# when encounter with any other replace it with space
+# When encounter with any other replace it with space
 new_str1 = re.sub(r'[^a-zA-Z0-9]', ' ', str1)
 print(new_str1)
 
 
 str2 = "hey@yo%ggs_xbshd&nfnf%gdbv%"
 
-# declaring a string with all speical characters
+# Declaring a string with all special characters
 # if given string encounter any of those from regEx , replace with space
 regex01 = r'@_!#$%^&*()<>?/\|}{~:;[]'
 for i in str2:

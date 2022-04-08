@@ -1,5 +1,6 @@
-# declaring a parent class
+# creating a Parent class
 class A:
+
     def feature1(self):
         print("feature 1 is of A")
 
@@ -7,8 +8,9 @@ class A:
         print("feature 2 is of A")
 
 
-# declaring a child class of parent
-class B(A):
+# creating other Parent class
+class B:
+
     def feature3(self):
         print("feature 3 is of B")
 
@@ -16,37 +18,33 @@ class B(A):
         print("feature 4 is of B")
 
 
-# declaring child class of the child class
-class C(B):
+# creating a child class of both Parent classes
+class C(A, B):
     def feature5(self):
         print("feature 5 is of C")
 
 
-# creating an object of parent class
+# object of Parent class
 a1 = A()
 
 print("A--parent class ")
-
-# accessing the functions of it
+# accessing its features
 a1.feature1()
 a1.feature2()
 
-# creating object of child class
+# Object of other Parent class
 b1 = B()
 
-print("B--Child class of A")
-
-# accessing its functions as well as of the parent class
-b1.feature1()
-b1.feature2()
+print("B--Parent class")
+# Accessing its features
 b1.feature3()
 b1.feature4()
 
-# creating object of the grand-child class
+# Object of other child class
 c1 = C()
-print("C-- child of B")
+print("C-- child of A and B")
 
-# accessing its functions as well as of the parent and grandparent
+# Accessing its features as well as of parents A and B
 c1.feature1()
 c1.feature2()
 c1.feature3()

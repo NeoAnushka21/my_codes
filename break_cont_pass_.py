@@ -1,9 +1,9 @@
 # we have 3 available chocolates
 ava = 3
-# user will tell how many chocolates they want
+# User will tell how many chocolates they want
 x = int(input("How many chocolates do you want?\n answer: "))
 
-# break is to get out of the loop
+# Break is to get out of the loop
 i = 1
 while i <= x:
     if i > ava:
@@ -13,7 +13,7 @@ while i <= x:
     i += 1
 print("Bye1")
 
-# continue is to skip the condition but stay in the loop
+# Continue is to skip the condition but stay in the loop
 for i in range(1, 51):
     if i % 3 == 0 and i % 5 == 0:
         continue
@@ -21,7 +21,7 @@ for i in range(1, 51):
 print("bye2")
 
 
-# pass is to ignore the block
+# Pass is to ignore the block
 for i in range(1, 51):
     if i % 2 != 0:
         pass
