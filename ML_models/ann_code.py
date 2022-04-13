@@ -76,7 +76,7 @@ Number of Products: 2
 Does this customer have a credit card? Yes
 Is this customer an Active Member: Yes
 Estimated Salary: $ 50000
-So, should we say goodbye to that customer?"""
+Let's predict if this customer will leave the bank or not"""
 print(ann.predict(sc.transform([[1, 0, 0, 600, 1, 40, 3, 60000, 2, 1, 1, 50000]])) > 0.5)
 
 # Predicting the Test set results

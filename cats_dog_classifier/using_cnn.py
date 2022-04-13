@@ -10,6 +10,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from keras.models import Sequential                                # for adding layers
 from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten      # this is for applying the process of cnn
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, accuracy_score
 
 # accessing the images folders
 DIRECTORY = r"/home/neosoft/Downloads/extra_images"
@@ -47,13 +49,10 @@ def image_preprocess():
             arr_img = cv2.resize(arr_img, (IMG_SIZE, IMG_SIZE))
             # print(arr_img)
             arr_img = arr_img / 255.
-            print(arr_img)
 
-            # plt.imshow(arr_img)     #to disply image
+            # plt.imshow(arr_img)     #to display image
             # break
-
             data.append([arr_img, label])
-
 
 image_preprocess()
 
@@ -83,33 +82,28 @@ print("array y:", y)
 
 # creating the model
 
+model01 = Sequential()
+""" to add a convolution layer(number of feature detectors,size of feature detector(matrix),activation)"""
+model01.add(Conv2D(60, (3, 3), activation='relu'))
+model01.add(MaxPooling2D((2, 2)))
 
-def model():
+# repeating above step
+model01.add(Conv2D(60, (3, 3), activation='relu'))
+model01.add(MaxPooling2D((2, 2)))
 
-    model01 = Sequential()
-    """ to add a covolution layer(number of feature detectors,size of feature detector(matrix),activation)"""
-    model01.add(Conv2D(60, (3, 3), activation='relu'))
-    model01.add(MaxPooling2D((2, 2)))
+model01.add(Flatten())
+""" Dense(number of neurons in hidden layer,(100,100,3))"""
+model01.add(Dense(128, input_shape=X.shape[1:], activation='relu'))
 
-    # repeating above step
-    model01.add(Conv2D(60, (3, 3), activation='relu'))
-    model01.add(MaxPooling2D((2, 2)))
+# not the output layer
+"""Dense(no.of output neurons [cat and dog so 2],..)"""
+model01.add(Dense(2, activation='softmax'))
 
-    model01.add(Flatten())
-    """ Dense(number of neurons in hidden layer,(100,100,3))"""
-    model01.add(Dense(128, input_shape=X.shape[1:], activation='relu'))
+# compiling the model
 
-    # not the output layer
-    """Dense(no.of output neurons [cat and dog so 2],..)"""
-    model01.add(Dense(2, activation='softmax'))
+model01.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-    # compiling the model
+# fitting the data
 
-    model01.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model01.fit(X, y, epochs=5, validation_split=0.1)
 
-    # fitting the data
-
-    model01.fit(X, y, epochs=1, validation_split=0.1)
-
-
-model()

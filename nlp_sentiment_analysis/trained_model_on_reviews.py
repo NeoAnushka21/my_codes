@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request
-import pandas as pd
-import numpy as np
-import re
-import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer, PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix, accuracy_score
+import pandas as pd
+import numpy as np
+import re
+import nltk
 
 df = pd.read_csv('/home/neosoft/Downloads/Restaurant_Reviews.tsv', delimiter='\t', quoting=3)
 # print(df)
@@ -32,15 +32,16 @@ for i in range(1000):
 
 # print(corpus)
 # creating bag of words model
-cv = CountVectorizer(max_features=1500)
-X = cv.fit_transform(corpus).toarray()
+count_vec = CountVectorizer(max_features=1500)
+X = count_vec.fit_transform(corpus).toarray()
 y = df.iloc[:, -1].values
 
+# Splitting dataset
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=2)
 
-# training the naive bayes model
-classifier = GaussianNB()
-classifier.fit(X_train, y_train)
+# Training the svc model
+svc_classifier = SVC(kernel = 'linear', random_state = 0)
+svc_classifier.fit(X_train, y_train)
 
 # predicting test results
 y_pred = classifier.predict(X_test)
@@ -84,7 +85,7 @@ def main():
         print(new_y_pred_score)
         scr = max(new_y_pred_score[0])
 
-        # checking the sentiment if it is +ve ,-ve or neutral
+        # checking the sentiment if it is +ve or -ve
         if new_y_pred == 1:
             return render_template('home.html', message="Positive", value=scr)
         elif new_y_pred == 0:
