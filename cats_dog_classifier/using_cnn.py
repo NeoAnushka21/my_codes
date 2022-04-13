@@ -82,28 +82,30 @@ print("array y:", y)
 
 # creating the model
 
-model01 = Sequential()
-""" to add a convolution layer(number of feature detectors,size of feature detector(matrix),activation)"""
-model01.add(Conv2D(60, (3, 3), activation='relu'))
-model01.add(MaxPooling2D((2, 2)))
+def cnn_model():
+    model01 = Sequential()
+    """ to add a convolution layer(number of feature detectors,size of feature detector(matrix),activation)"""
+    model01.add(Conv2D(60, (3, 3), activation='relu'))
+    model01.add(MaxPooling2D((2, 2)))
 
-# repeating above step
-model01.add(Conv2D(60, (3, 3), activation='relu'))
-model01.add(MaxPooling2D((2, 2)))
+    # repeating above step
+    model01.add(Conv2D(60, (3, 3), activation='relu'))
+    model01.add(MaxPooling2D((2, 2)))
 
-model01.add(Flatten())
-""" Dense(number of neurons in hidden layer,(100,100,3))"""
-model01.add(Dense(128, input_shape=X.shape[1:], activation='relu'))
+    model01.add(Flatten())
+    """ Dense(number of neurons in hidden layer,(100,100,3))"""
+    model01.add(Dense(128, input_shape=X.shape[1:], activation='relu'))
 
-# not the output layer
-"""Dense(no.of output neurons [cat and dog so 2],..)"""
-model01.add(Dense(2, activation='softmax'))
+    # not the output layer
+    """Dense(no.of output neurons [cat and dog so 2],..)"""
+    model01.add(Dense(2, activation='softmax'))
 
-# compiling the model
+    # compiling the model
 
-model01.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model01.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-# fitting the data
+    # fitting the data
 
-model01.fit(X, y, epochs=5, validation_split=0.1)
+    model01.fit(X, y, epochs=5, validation_split=0.1)
 
+cnn_model()
