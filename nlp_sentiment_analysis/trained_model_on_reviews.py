@@ -40,11 +40,11 @@ y = df.iloc[:, -1].values
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=2)
 
 # Training the svc model
-svc_classifier = SVC(kernel = 'linear', random_state = 0)
+svc_classifier = SVC(kernel='linear', random_state=0)
 svc_classifier.fit(X_train, y_train)
 
 # predicting test results
-y_pred = classifier.predict(X_test)
+y_pred = svc_classifier.predict(X_test)
 # print(np.concatenate((y_pred.reshape(len(y_pred), 1), y_test.reshape(len(y_test), 1)), 1))
 
 
@@ -52,7 +52,6 @@ cm = confusion_matrix(y_test, y_pred)
 print(cm)
 score = accuracy_score(y_test, y_pred)
 print(score)
-
 
 # Creating flask app
 app = Flask(__name__, template_folder='template')
@@ -78,14 +77,15 @@ def main():
         input_text = [ps.stem(word) for word in input_text if not word in set(all_stopwords)]
         input_text = ' '.join(input_text)
         test_corpus.append(input_text)
-        new_X_test = cv.transform(test_corpus).toarray()
-        new_y_pred = classifier.predict(new_X_test)
+        new_X_test = count_vec.transform(test_corpus).toarray()
+        new_y_pred = svc_classifier.predict(new_X_test)
+
         print(new_y_pred)
-        new_y_pred_score = classifier.predict_proba(new_X_test)
+        new_y_pred_score = svc_classifier.predict_proba(new_X_test)
         print(new_y_pred_score)
         scr = max(new_y_pred_score[0])
 
-        # checking the sentiment if it is +ve or -ve
+        # Checking the sentiment if it is +ve or -ve
         if new_y_pred == 1:
             return render_template('home.html', message="Positive", value=scr)
         elif new_y_pred == 0:
