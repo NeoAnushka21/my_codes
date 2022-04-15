@@ -23,16 +23,28 @@ X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
 # Training the model
-classifier = LogisticRegression(random_state=0)
-classifier.fit(X_train, y_train)
-y_pred = classifier.predict(X_test)
+log_reg_classifier = LogisticRegression(random_state=0)
+log_reg_classifier.fit(X_train, y_train)
+y_pred = log_reg_classifier .predict(X_test)
 
 # Predicting result- w.r.t age smoking and drinking count
-print(classifier.predict(sc.transform([[40, 5, 2]])))
+age = int(input("enter age : "))
+drink = int(input("Enter number of drinks: "))
+smoke = int(input("enter number of cig : "))
+print(f"A person with age {age} ,who drinks {drink} times and smokes {smoke} time :")
+predicted_value = log_reg_classifier .predict(sc.transform([[age, drink, smoke]]))
+print(predicted_value)
+
+if predicted_value == 0:
+    print("This person may not get lung cancer")
+elif predicted_value == 1:
+    print("This person is likely to have cancer")
+
 
 # Making the confusion matrix
 cm = confusion_matrix(y_test, y_pred)
+print("Confusion matrix:")
 print(cm)
 # Checking the accuracy
 score = accuracy_score(y_test, y_pred)
-print(score)
+print("The accuracy of model is :", score)
