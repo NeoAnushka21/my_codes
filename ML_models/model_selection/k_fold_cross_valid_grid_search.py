@@ -5,7 +5,6 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 
 # Importing the dataset
