@@ -41,6 +41,7 @@ def add_user():
     finally:
         cursor.close()
         conn.close()
+    return "email already exists , please go back and change it"
 
 
 # Displaying the users , fetching from database
@@ -62,6 +63,7 @@ def users():
     finally:
         cursor.close()
         conn.close()
+    return "oops something went wrong"
 
 
 @app.route('/edit/<int:id>')
@@ -83,6 +85,7 @@ def edit_view(id):
     finally:
         cursor.close()
         conn.close()
+    return "oops something went wrong"
 
 
 # To update user details
@@ -117,6 +120,7 @@ def update_user():
     finally:
         cursor.close()
         conn.close()
+    return "oops something went wrong"
 
 
 # for deleting the user
@@ -137,6 +141,7 @@ def delete_user(id):
     finally:
         cursor.close()
         conn.close()
+    return "oops something went wrong"
 
 
 if __name__ == "__main__":

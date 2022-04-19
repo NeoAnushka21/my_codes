@@ -38,4 +38,3 @@ bag_model.fit(X_train, y_train)
 
 score = bag_model.oob_score_
 print("Accuracy score :", score)
-

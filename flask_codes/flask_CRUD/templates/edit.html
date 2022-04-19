@@ -10,14 +10,14 @@
     <dl>
         <p>
             <input name="inputName" value="{{ row['user_name'] }}"
-                 type="text" placeholder="Name" autocomplete="off" required>
+                 type="text" placeholder="Name" autocomplete="on" required>
         </p>
         <p>
             <input name="inputEmail" value="{{ row['user_email'] }}"
-                 type="text" placeholder="Email" autocomplete="off" required>
+                 type="text" placeholder="Email" autocomplete="on" required>
         </p>
         <p>
-            <input name="inputPassword" value=""
+            <input name="inputPassword" value="{{ row['user_password'] }}"
               type="password" placeholder="Password" autocomplete="off" required>
         </p>
     </dl>
