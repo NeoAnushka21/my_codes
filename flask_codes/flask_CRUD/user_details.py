@@ -1,9 +1,33 @@
 import pymysql
-from app import app
-from tables import Results
-from database_config import mysql
+from flask import Flask
+from flask_table import Table, Col, LinkCol
+from flaskext.mysql import MySQL
 from flask import flash, render_template, request, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
+
+
+app = Flask(__name__)
+app.secret_key = "secret key"
+
+
+class Results(Table):
+
+    user_id = Col('Id', show=False)
+    user_name = Col('Name')
+    user_email = Col('Email')
+    user_password = Col('Password', show=False)
+    edit = LinkCol('Edit', 'edit_view', url_kwargs=dict(id='user_id'))
+    delete = LinkCol('Delete', 'delete_user', url_kwargs=dict(id='user_id'))
+
+mysql = MySQL()
+
+# MySQL configurations
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'Anushka@21'
+app.config['MYSQL_DATABASE_DB'] = 'student_data'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+
+mysql.init_app(app)
 
 
 @app.route('/new_user')
@@ -26,7 +50,7 @@ def add_user():
             # To save password not as plain text
             _hashed_password = generate_password_hash(_password)
             # Saving the edits
-            sql = "INSERT INTO tbl_user(user_name, user_email, user_password) VALUES(%s, %s, %s)"
+            sql = "INSERT INTO students(user_name, user_email, user_password) VALUES(%s, %s, %s)"
             data = (_name, _email, _hashed_password,)
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -41,7 +65,7 @@ def add_user():
     finally:
         cursor.close()
         conn.close()
-    return "email already exists , please go back and change it"
+    return "<h1>email already exists , please go back and change it</h1>"
 
 
 # Displaying the users , fetching from database
@@ -53,7 +77,7 @@ def users():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM tbl_user")
+        cursor.execute("SELECT * FROM students")
         rows = cursor.fetchall()
         table = Results(rows)
         table.border = True
@@ -74,7 +98,7 @@ def edit_view(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM tbl_user WHERE user_id=%s", id)
+        cursor.execute("SELECT * FROM students WHERE user_id=%s", id)
         row = cursor.fetchone()
         if row:
             return render_template('edit.html', row=row)
@@ -105,7 +129,7 @@ def update_user():
             _hashed_password = generate_password_hash(_password)
             print(_hashed_password)
             # Saving the edits
-            sql = "UPDATE tbl_user SET user_name=%s, user_email=%s, user_password=%s WHERE user_id=%s"
+            sql = "UPDATE students SET user_name=%s, user_email=%s, user_password=%s WHERE user_id=%s"
             data = (_name, _email, _hashed_password, _id,)
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -131,7 +155,7 @@ def delete_user(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM tbl_user WHERE user_id=%s", (id,))
+        cursor.execute("DELETE FROM students WHERE user_id=%s", (id,))
         conn.commit()
         flash('User deleted successfully!')
         # Gets redirected to users.html
