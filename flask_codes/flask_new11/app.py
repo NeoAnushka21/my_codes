@@ -34,17 +34,17 @@ def add_student():
             student_phone = request.form['student_phone']
             print(student_name)
             if student_name == '':
-                msg = '<h3 style="color:red"><b>Please Input name</b></h3>'
+                msg = '<h4 style="color:red"><b>Error !! Name missing</b></h4>'
             elif student_department == '':
-                msg = 'Please Input Department'
+                msg = '<h3 style="color:red"><b>Error !! Department missing</b></h3>'
             elif student_phone == '':
-                msg = 'Please Input Phone'
+                msg = '<h3 style="color:red"><b>Error !! phone number missing</b></h3>'
             else:
                 cur.execute("INSERT INTO stud_data (name,department,phone) VALUES (%s,%s,%s)",
                             [student_name, student_department, student_phone])
                 mysql_connector.connection.commit()
                 cur.close()
-                msg = 'Student details added successfully'
+                msg = '<h3 style="color:green"></b>Student details added successfully</b></h3>'
         return jsonify(msg)
     except Exception:
         return '<h3 style="color:red"><b>Something went wrong while adding student details</b></h3>'

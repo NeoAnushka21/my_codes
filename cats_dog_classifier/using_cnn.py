@@ -1,17 +1,9 @@
-# importing necessary libraries
-
 import random
 import cv2
 import os
-import keras
-import tensorflow
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 from keras.models import Sequential                                # for adding layers
 from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten      # this is for applying the process of cnn
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, accuracy_score
 
 # accessing the images folders
 DIRECTORY = r"/home/neosoft/Downloads/extra_images"
@@ -20,18 +12,17 @@ CATEGORIES = ['cats', 'dogs']
 # setting a fixed pixel size for all the images
 IMG_SIZE = 100
 
-# creating a list to store image array and it's label
+# creating a list to store image array with  it's label
 data = []
-
-# read every image, converting and  store it in an array
 
 
 def image_preprocess():
+    """read every image, converting and  store it in an array"""
     for category in CATEGORIES:
         fldr = os.path.join(DIRECTORY, category)
         # print(fldr) to check the paths of the folders
 
-        """ labling if it is a dog/cat"""
+        """ labeling if it is a dog/cat"""
         label = CATEGORIES.index(category)
 
         """looking through all the files inside the folder/dir"""
@@ -53,6 +44,7 @@ def image_preprocess():
             # plt.imshow(arr_img)     #to display image
             # break
             data.append([arr_img, label])
+
 
 image_preprocess()
 
@@ -108,4 +100,6 @@ def cnn_model():
 
     model01.fit(X, y, epochs=5, validation_split=0.1)
 
+
 cnn_model()
+
