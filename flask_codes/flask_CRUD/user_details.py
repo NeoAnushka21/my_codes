@@ -19,6 +19,7 @@ class Results(Table):
     edit = LinkCol('Edit', 'edit_view', url_kwargs=dict(id='user_id'))
     delete = LinkCol('Delete', 'delete_user', url_kwargs=dict(id='user_id'))
 
+
 mysql = MySQL()
 
 # MySQL configurations
