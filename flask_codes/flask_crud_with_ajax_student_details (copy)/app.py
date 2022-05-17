@@ -1,25 +1,24 @@
 from flask import Flask, render_template, request, jsonify
-from flask_mysqldb import MySQL, MySQLdb
+import sqlite3
 
 app = Flask(__name__)
 
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Anushka@21'
-app.config['MYSQL_DB'] = 'student_data'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-mysql_connector = MySQL(app)
+def get_db_connection():
+    conn = sqlite3.connect('mysqlsampledatabase.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
 @app.route('/')
 def student_form():
     try:
-        cur = mysql_connector.connection.cursor(MySQLdb.cursors.DictCursor)
-        result = cur.execute("SELECT * FROM stud_data ORDER BY id")
-        employee = cur.fetchall()
-        return render_template('index.html', employee=employee)
-    except Exception:
+        conn = get_db_connection()
+        details = conn.execute("SELECT * FROM stud_data ORDER BY id")
+        conn.close()
+        return render_template('index.html', details=details)
+    except Exception as e:
+        print(e)
         return "<h3 style='color:red'><b>opps something went wrong while directing to home page</b></h3>"
 
 
@@ -32,7 +31,7 @@ def add_student():
             student_name = request.form['student_name']
             student_department = request.form['student_department']
             student_email = request.form['student_email']
-            # print(student_name)
+            print(student_name)
             if student_name == '':
                 msg = '<h4 style="color:red"><b>Error !! Name missing</b></h4>'
             elif student_department == '':
@@ -40,21 +39,14 @@ def add_student():
             elif student_email == '':
                 msg = '<h3 style="color:red"><b>Error !! Email missing</b></h3>'
             else:
-                my_sql = "SELECT * from stud_data where email like ?"
-                cur.execute(my_sql, [student_email])
-                result = cur.fetchall()
-                if len(result) >=1 :
-                    msg = '<h3 style="color:red">Opps , This email already exists , please try another one </h3>'
-                else:
-                    cur.execute("INSERT INTO stud_data (name,department,email) VALUES (%s,%s,%s)",
-                                [student_name, student_department, student_email])
-                    mysql_connector.connection.commit()
-                    cur.close()
-                    msg = '<h3 style="color:green"></b>Student details added successfully</b></h3>'
-
-            return jsonify(msg)
+                cur.execute("INSERT INTO stud_data (name,department,email) VALUES (%s,%s,%s)",
+                            [student_name, student_department, student_email])
+                mysql_connector.connection.commit()
+                cur.close()
+                msg = '<h3 style="color:green"></b>Student details added successfully</b></h3>'
+        return jsonify(msg)
     except Exception as e:
-        return '<h3 style="color:red"><b>Something went wrong while adding student details </b></h3>'
+        return '<h2 style="color:red"><b>Email already exists change it</b></h2>'
 
 
 @app.route("/update_student", methods=["POST", "GET"])
@@ -77,7 +69,7 @@ def update_student():
         return jsonify(msg)
     except Exception as e:
         print(e)
-        return '<h3 style="color:red"><b>Email already exists please change it</b></h3>'
+        return '<h2 style="color:red"><b>Email already exists change it</b></h2>'
 
 
 @app.route("/delete_student", methods=["POST", "GET"])

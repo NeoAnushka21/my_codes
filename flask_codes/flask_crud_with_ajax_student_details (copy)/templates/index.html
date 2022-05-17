@@ -170,14 +170,11 @@ $(document).ready(
    // update rec row on edit button click
 
     $(document).on("click", ".update", function(){
-    alert("Are you sure you want to edit?");
-
         var id = $(this).attr("id");
         var string = id;
         var student_name = $("#student_name").val();
         var student_department = $("#student_department").val();
         var student_email = $("#student_email").val();
-
         $.post("/update_student",
         { string:
          string,student_name: student_name,
@@ -187,9 +184,9 @@ $(document).ready(
                 $("#displaymessage").html(data);
                 $("#displaymessage").show();
 
-                //location. reload()
-        });
+         location. reload()
 
+        });
 
 
     });

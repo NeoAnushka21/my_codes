@@ -90,5 +90,5 @@ def delete_employee(id):
 
 # starting the app
 if __name__ == "__main__":
-    app.run(port=3000, debug=True)
+    app.run( debug=True)
 # < / string: id > < / id > < / id >
