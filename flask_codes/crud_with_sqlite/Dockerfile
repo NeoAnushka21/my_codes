@@ -11,11 +11,6 @@ WORKDIR /app
 COPY requirements.txt /
 RUN pip install -r /requirements.txt
 
-#RUN pip install -r requirements.txt
-#
-## copy the requirements file into the image
-#COPY ./requirements.txt .
-
 # copy every content from the local file to the image
 COPY . /app
 
