@@ -4,19 +4,31 @@ import sqlite3
 app = Flask(__name__)
 
 
+# Establishing connection with sqlite
 def get_db_connection():
-    conn = sqlite3.connect('mysqlsampledatabase.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+    conn = None
+    try:
+        conn = sqlite3.connect("sample_data.db")
+
+        conn.row_factory = sqlite3.Row
+
+        # print("Database connected successfully")
+        return conn
+    except Exception as e:
+        print(e)
+        return "Something went wrong while connecting to database"
 
 
 @app.route('/')
 def student_form():
     try:
         conn = get_db_connection()
-        details = conn.execute("SELECT * FROM stud_data ORDER BY id")
-        conn.close()
-        return render_template('index.html', details=details)
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM students_info_ ORDER BY id")
+        students = cur.fetchall()
+        conn.commit()
+        #print(students)
+        return render_template('index.html', students=students)
     except Exception as e:
         print(e)
         return "<h3 style='color:red'><b>opps something went wrong while directing to home page</b></h3>"
@@ -25,13 +37,14 @@ def student_form():
 @app.route("/add_student", methods=["POST", "GET"])
 def add_student():
     try:
-        cursor = mysql_connector.connection.cursor()
-        cur = mysql_connector.connection.cursor(MySQLdb.cursors.DictCursor)
+        conn = get_db_connection()
+        cur = conn.cursor()
         if request.method == 'POST':
             student_name = request.form['student_name']
             student_department = request.form['student_department']
             student_email = request.form['student_email']
-            print(student_name)
+            #print(student_name)
+
             if student_name == '':
                 msg = '<h4 style="color:red"><b>Error !! Name missing</b></h4>'
             elif student_department == '':
@@ -39,53 +52,76 @@ def add_student():
             elif student_email == '':
                 msg = '<h3 style="color:red"><b>Error !! Email missing</b></h3>'
             else:
-                cur.execute("INSERT INTO stud_data (name,department,email) VALUES (%s,%s,%s)",
-                            [student_name, student_department, student_email])
-                mysql_connector.connection.commit()
-                cur.close()
-                msg = '<h3 style="color:green"></b>Student details added successfully</b></h3>'
+                sql = "SELECT * from students_info_ where email like ?"
+                cur.execute(sql, [student_email])
+                result = cur.fetchall()
+                # print(result)
+                if len(result) >= 1:
+                    msg = "Oops !! email already exists"
+                else:
+                    sql = """INSERT INTO students_info_ (name,department,email) VALUES (?,?,?)"""
+                    cur.execute(sql, (student_name, student_department, student_email))
+                    conn.commit()
+                    cur.close()
+                    msg = 'New record created successfully'
         return jsonify(msg)
     except Exception as e:
-        return '<h2 style="color:red"><b>Email already exists change it</b></h2>'
+        print(e)
+        return '<h2 style="color:red"><b>Something went Wrong while adding student</b></h2>'
 
 
 @app.route("/update_student", methods=["POST", "GET"])
 def update_student():
     try:
 
-        cursor = mysql_connector.connection.cursor()
-        cur = mysql_connector.connection.cursor(MySQLdb.cursors.DictCursor)
+        conn = get_db_connection()
+        cur = conn.cursor()
         if request.method == 'POST':
             string = request.form['string']
             student_name = request.form['student_name']
             student_department = request.form['student_department']
             student_email = request.form['student_email']
             print(string)
-            cur.execute("UPDATE stud_data SET name = %s, department = %s,email = %s WHERE id = %s ",
-                        [student_name, student_department, student_email, string])
-            mysql_connector.connection.commit()
+
+            sql = "UPDATE students_info_ SET name = ?,department = ?, email=? WHERE id = ? "
+            cur.execute(sql, [student_name, student_department, student_email, string])
+            conn.commit()
             cur.close()
             msg = '<h3 style="color:green"><b>Record successfully Updated</b></h3>'
+
+            # sql = "SELECT * from students_info_  where email like ?"
+            # cur.execute(sql, [student_email])
+            # result = cur.fetchall()
+            # # print(result)
+            # if len(result) >= 1:
+            #     msg = "Oops !! email already exists"
+            # else:
+            #     cur.execute("UPDATE students_info_ SET name = ?,department = ?, email=? WHERE id = ? ",
+            #                 (student_name, student_department, student_email, string))
+            #     conn.commit()
+            #     cur.close()
+            #     msg = 'Record successfully Updated'
         return jsonify(msg)
     except Exception as e:
         print(e)
-        return '<h2 style="color:red"><b>Email already exists change it</b></h2>'
+        return '<h2 style="color:red"><b>Email Already exists!! please try other one</b></h2>'
 
 
 @app.route("/delete_student", methods=["POST", "GET"])
 def delete_student():
     try:
-        cursor = mysql_connector.connection.cursor()
-        cur = mysql_connector.connection.cursor(MySQLdb.cursors.DictCursor)
+        conn = get_db_connection()
+        cur = conn.cursor()
         if request.method == 'POST':
             getid = request.form['string']
             print(getid)
-            cur.execute('DELETE FROM stud_data WHERE id = {0}'.format(getid))
-            mysql_connector.connection.commit()
+            cur.execute('DELETE FROM students_info_ WHERE id = {0}'.format(getid))
+            conn.commit()
             cur.close()
-            msg = '<h3 style="color:green"><b>Record successfully deleted</b></h3>'
+            msg = 'Successfully Deleted student record'
         return jsonify(msg)
-    except Exception:
+    except Exception as e:
+        print(e)
         return '<h3 style="color:red"><b>Something went wrong while deleting student details</b></h3>'
 
 
