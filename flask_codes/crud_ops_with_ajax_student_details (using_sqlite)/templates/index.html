@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Details</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+    body {
+        color: white;
+        background-color: black;
+  font-family: 'Open Sans', sans-serif;
+ }
+ .table-wrapper {
+  width: 700px;
+  margin: 30px auto;
+        background: teal;
+        padding: 20px;
+        box-shadow: 0 1px 1px rgba(0,0,0,.10);
+    }
+    .table-title {
+        padding-bottom: 10px;
+        margin: 0 0 10px;
+    }
+    .table-title h2 {
+        margin: 10px 0 0;
+        font-size: 24px;
+    }
+    .table-title .add-new {
+        float: right;
+  height: 30px;
+  font-weight: bold;
+  font-size: 12px;
+  text-shadow: none;
+  min-width: 100px;
+  border-radius: 50px;
+  line-height: 13px;
+    }
+ .table-title .add-new i {
+  margin-right: 4px;
+ }
+    table.table {
+        table-layout: fixed;
+    }
+    table.table tr th, table.table tr td {
+        border-color: black;
+    }
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    table.table th:last-child {
+        width: 100px;
+    }
+    table.table td a {
+  cursor: pointer;
+        display: inline-block;
+        margin: 0 5px;
+  min-width: 24px;
+    }
+ table.table td a.add {
+        color: red;
+    }
+    table.table td a.edit {
+        color: yellow;
+    }
+    table.table td a.delete {
+        color: pink;
+    }
+    table.table td i {
+        font-size: 10px;
+    }
+ table.table td a.add i {
+        font-size: 24px;
+     margin-right: -1px;
+        position: relative;
+        top: 3px;
+    }
+    table.table .form-control {
+        height: 32px;
+        line-height: 32px;
+        box-shadow: none;
+        border-radius: 2px;
+    }
+ table.table .form-control.error {
+  border-color: red;
+ }
+ table.table td .add {
+  display: none;
+ }
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    var actions = $("table td:last-child").html();
+
+    // Append table with add row form on add new button click
+
+    $(".add-new").click(
+    function()
+    {
+        $(this).attr("disabled", "disabled");
+        var index = $("table tbody tr:last-child").index();
+        var row = '<tr>' +
+            '<td><input type="text" class="form-control" name="name" id="student_name"></td>' +
+            '<td><input type="text" class="form-control" name="department" id="student_department"></td>' +
+            '<td><input type="text" class="form-control" name="email" id="student_email"></td>' +
+            '<td>' + actions + '</td>' +
+            '</tr>';
+        $("table").append(row);
+        $("table tbody tr").eq(index + 1).find(".add, .edit, .delete").toggle();
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
+
+    // Add row on add button click
+
+    $(document).on("click", ".add", function()
+    {
+        var empty = false;
+        var input = $(this).parents("tr").find('input[type="text"]');
+        input.each(function(){
+            if(!$(this).val()){
+                $(this).addClass("error");
+                empty = true;
+            } else{
+                $(this).removeClass("error");
+            }
+        });
+        var student_name = $("#student_name").val();
+        var student_department = $("#student_department").val();
+        var student_email = $("#student_email").val();
+        $.post("/add_student", { student_name: student_name, student_department: student_department,student_email:student_email},
+         function(data) {
+            setTimeout(()=>{
+                location.reload();
+            }, 4000);
+            $("#displaymessage").html(data);
+            $("#displaymessage").show();
+        });
+        $(this).parents("tr").find(".error").first().focus();
+        if(!empty){
+            input.each(function(){
+                $(this).parent("td").html($(this).val());
+            });
+            $(this).parents("tr").find(".edit, .delete").toggle();
+            $(this).parents("tr").find(".add").hide();
+            $(".add-new").removeAttr("disabled");
+
+        }
+    });
+
+    // Delete row on delete button click
+
+    $(document).on("click", ".delete", function()
+    {
+     alert("Are you sure you want to delete?");
+        $(this).parents("tr").remove();
+        $(".add-new").removeAttr("disabled");
+        var id = $(this).attr("id");
+        var string = id;
+        $.post("/delete_student", { string: string}, function(data) {
+            $("#displaymessage").html(data);
+            $("#displaymessage").show();
+        });
+    });
+
+    // update rec row on edit button click
+
+    $(document).on("click", ".update", function()
+    {
+    alert("Are you sure you want to edit?");
+        var id = $(this).attr("id");
+        var string = id;
+        var student_name = $("#student_name").val();
+        var student_department = $("#student_department").val();
+        var student_email = $("#student_email").val();
+
+        $.post("/update_student",
+        { string:
+         string,
+         student_name: student_name,
+         student_email:student_email,
+          student_department: student_department},
+           function(data) {
+            $("#displaymessage").html(data);
+            $("#displaymessage").show();
+            setTimeout(()=>{
+                location.reload();
+            }, 4000);
+        });
+    });
+
+
+    // Edit row on edit button click
+
+    $(document).on("click", ".edit", function(){
+        $(this).parents("tr").find("td:not(:last-child)").each(function(i){
+            if (i=='0'){
+                var idname = 'student_name';
+            }else if (i=='1'){
+                var idname = 'student_department';
+            }else if (i=='2'){
+                var idname = 'student_email';
+            }else{}
+            $(this).html('<input type="text" name="updaterec" id="' + idname + '" class="form-control" value="' + $(this).text() + '">');
+        });
+        $(this).parents("tr").find(".add, .edit").toggle();
+        $(".add-new").attr("disabled", "disabled");
+        $(this).parents("tr").find(".add").removeClass("add").addClass("update");
+    });
+});</script>
+</head>
+<body>
+<div class="container"><p><h3 align="center" style="color:white"><b>College Festival Volunteer List</b></h3></p>
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h4>Students please provide your details below:</h4></div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-info add-new">
+                            <i class="fa fa-plus"></i> Add New Student
+                        </button>
+                    </div>
+                    <div class='btn btn-info' id="displaymessage"
+                         style="display:none;width:100%;margin-top:10px;"></div>
+                </div>
+            </div>
+   <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="color:black"><i>Name</i></th>
+                        <th style="color:black"><i>Department</i></th>
+                        <th style="color:black"><i>Email</i></th>
+                        <th style="color:black"><i>Actions</i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in students %}
+                    <tr>
+                        <td>{{row.name}}</td>
+                        <td>{{row.department}}</td>
+                        <td>{{row.email}}</td>
+                        <td>
+                            <a class="add" title="Add" data-toggle="tooltip" id="{{row.id}}">
+                                <i class="fa fa-check" aria-hidden="true"></i>Add
+                            </a>
+                            <a class="edit" title="Edit" data-toggle="tooltip" id="{{row.id}}">
+                                <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>&nbsp; Edit
+                            </a>
+                            <a class="delete" title="Delete" data-toggle="tooltip" id="{{row.id}}">
+                                <i class="fa fa-trash-o fa-lg"></i> Delete
+                            </a>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

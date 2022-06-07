@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block body %}
+  <h5 class='text-center text-muted mb-3'>Sqlite-flask sample website</h5>
+  <p class='text-right'><a href='{{url_for("add_user")}}' class='btn btn-success '>Click to add</a></p>
+  <table class='table table-bordered'>
+    <thead>
+      <th>Sr.No.</th>
+      <th>Name</th>
+      <th>Contact</th>
+      <th>Action</th>
+      <th>Action</th>
+    </thead>
+    <tbody>
+      {% for row in datas %}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>{{row.UNAME}}</td>
+          <td>{{row.CONTACT}}</td>
+          <td><a href='{{url_for("edit_user",uid=row.UID)}}' class='btn btn-primary'>Edit</a></td>
+          <td><a href='{{url_for("delete_user",uid=row.UID)}}' class='btn btn-danger' onclick='return confirm("Are You Sure")'>remove</a></td>
+        </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+{% endblock %}
