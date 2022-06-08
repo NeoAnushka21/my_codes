@@ -223,9 +223,9 @@ def detect(oppt):
                 org_2 = (0, 100)
                 font = cv2.FONT_ITALIC
                 fontScale = 1
-                cv2.putText(im0,"Cars:: "+str(count_car), org_1, font,
+                cv2.putText(im0, "Cars:: "+str(count_car), org_1, font,
                    fontScale, color_1, thickness, cv2.LINE_AA)
-                cv2.putText(im0,"Trucks:: "+str(count_truck), org_2, font,
+                cv2.putText(im0, "Trucks:: "+str(count_truck), org_2, font,
                    fontScale, color_1, thickness, cv2.LINE_AA)
                 cv2.imshow(str(p), im0)
 
@@ -279,7 +279,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--yolo_model', nargs='+', type=str, default='yolov5m.pt', help='model.pt path(s)')
     parser.add_argument('--deep_sort_model', type=str, default='osnet_x0_25')
-    parser.add_argument('--source', type=str, default='/home/neosoft/PycharmProjects/videos/traffic_video00.mp4', help='source')  # file/folder, 0 for webcam
+    parser.add_argument('--source', type=str, default='/home/neosoft/PycharmProjects/my_codes/object_detectio_yolo_task/videos/traffic_vid (copy).mp4', help='source')  # file/folder, 0 for webcam
     parser.add_argument('--output', type=str, default='inference/output', help='output folder')  # output folder
     parser.add_argument('--imag_size', '--img', '--img-size', nargs='+', type=int, default=[480,480], help='inference size h,w')
     parser.add_argument('--conf-thres', type=float, default=0.7, help='object confidence threshold')
