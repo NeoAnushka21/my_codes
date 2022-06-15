@@ -1,0 +1,54 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - ask_insurance_queries
+  - ask_about_vehicles
+  - ask_car_insurance
+  - ask_bike_insurance
+  - policy_selection
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_answer_query:
+  - text: "I would love to help you out , can you tell please tell me your insurance number , if you don't have it would you like to buy policy for your car or bike "
+
+  utter_vehicle_query:
+  - text: "Okay we have multiple policies to insure your vehicle , can you tell me which policy are are looking to buy?"
+
+  utter_car_query:
+  - text: "Okay here are some good policies you can look into for your car : 1 2 3 4 5 6 7 8 9  "
+
+  utter_bike_query:
+  - text: "Okay here are some good policies you can look into for your bike : 1 2 3 4 5 6 7 8 9  "
+
+  utter_policy_selection_reply:
+  - text: "Thankyou for connecting with us.Our team will soon get in touch with you. "
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

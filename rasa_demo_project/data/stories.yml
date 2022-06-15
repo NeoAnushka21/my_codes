@@ -29,9 +29,19 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-- story:  ask diet_questions
+- story: ask diet
   steps:
-    - intent: utter_diet_info
+  - intent: ask_eat_healthy
+  - action: utter_eat_healthy
 
-    
+- story: ask stress
+  steps:
+  - intent: ask_lower_stress
+  - action: utter_stress
 
+- story: ask exercise
+  steps:
+  - intent: ask_exercise
+  - action: utter_exercise
+  - intent: affirm
+  - action: utter_happy

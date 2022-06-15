@@ -32,14 +32,15 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-  utter_stress_info:
-    - text: "It's okay to feel overwhelmed at times . try to mediate and get time for yourself , do what you love , try to reconnect with your hobbies "
+  utter_eat_healthy:
+  - text: "Try to avoid  outside junk food, Include fruits and vegetables in your diet . Stay away from sugary and oily food"
 
-  utter_exercise_info:
-    - text: "Most healthy Adults should aim to get about 150min of moderate exercise per week. Include activities like brisk walking , slow jog , stretching "
+  utter_exercise:
+  - text: "A healthy adult must give at least 150min a week for exersice , you can include brisk walks, slow jogs , yoga , etc."
 
-  utter_diet_info :
-    - text: "A healthy diet consists of fruits and veggies"
+  utter_stress:
+  - text: "It is okay to feel overwhelmed at times , try to do things that make you happy . Give your brains some rest , go watch your favourite show"
+
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
