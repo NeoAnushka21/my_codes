@@ -121,6 +121,8 @@ nlu:
     - 2 wheeler insurance
     - bike insurance
     - bike
+    
+
 - intent: policy_selection
   examples: |
     - I would like to choose number 1

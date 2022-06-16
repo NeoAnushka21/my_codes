@@ -34,7 +34,7 @@ responses:
   - text: "I am a bot, powered by Rasa."
 
   utter_answer_query:
-  - text: "I would love to help you out , can you tell please tell me your insurance number , if you don't have it would you like to buy policy for your car or bike "
+  - text: "I would love to help you out , can you please tell me your insurance number , if you don't have it would you like to buy policy for your car or bike "
 
   utter_vehicle_query:
   - text: "Okay we have multiple policies to insure your vehicle , can you tell me which policy are are looking to buy?"
